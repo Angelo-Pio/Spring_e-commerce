@@ -1,0 +1,5 @@
+Domande ed incertezze su implementazioni:
+
+1) Constraint sugli input o sullo schema del database?
+2) Cosa ritornare al client? ResponseEntity con un Dto?
+3) 
