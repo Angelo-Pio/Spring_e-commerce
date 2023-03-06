@@ -48,7 +48,7 @@ public class UserService {
 				user.setHashed_password(encoder.encode(dto.getPassword()));
 
 				if (dto.getRole() == null) {
-					user.setRole(UserRole.GUEST);
+					user.setRole(UserRole.USER);
 				}
 				repo.save(user);
 				return Optional.of(mapper.fromModelToDto(user));
@@ -99,5 +99,45 @@ public class UserService {
 		}
 		return Optional.empty();
 	}
+
+	public Optional<OutputUserDto> updateUserCredentials(InputUserDto dto) {
+
+		String email = dto.getEmail();
+		if(val.validateEmail(email) == false) return Optional.empty();
+		
+		Optional<User> userOpt = repo.findByEmail(email);
+		if(!userOpt.isEmpty()) {
+			User user = userOpt.get();
+			
+			String phoneNumber = dto.getPhoneNumber();
+			String address = dto.getAddress();
+			UserRole role = dto.getRole();
+			
+			if(phoneNumber != null) {
+				if(val.validatePhoneNumber(phoneNumber)) {
+					user.setPhoneNumber(phoneNumber);
+				}
+			}
+			if(address!= null) {
+				if(val.validateAddress(address)) {
+					user.setAddress(address);
+				}
+			}
+			
+			if(role!= null) {
+				if(val.validateRole(role)) {
+					user.setRole(role);
+				}
+			}
+			return Optional.of(mapper.fromModelToDto(repo.save(user)));
+			
+			
+			
+		}
+		
+		return Optional.empty();
+	}
+
+	
 
 }

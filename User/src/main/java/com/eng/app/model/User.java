@@ -1,5 +1,7 @@
 package com.eng.app.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -39,6 +41,8 @@ public class User {
 	@Column(length = 255, nullable = false)
 	private String email;
 	
+//	private Integer money -> assume a User has unlimited money?
+	
 	@Column(nullable = false, length = 255 )
 	private String hashed_password;
 	
@@ -48,7 +52,7 @@ public class User {
 	@Column(nullable= true,length = 13)
 	private String phoneNumber;
 	
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private UserRole role;
 	

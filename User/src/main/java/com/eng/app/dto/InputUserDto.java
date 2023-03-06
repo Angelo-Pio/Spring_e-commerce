@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Component
 public class InputUserDto {
 
+	
 	private String name;
 	
 	private String surname;

@@ -19,8 +19,6 @@ public class UserValidator {
 
 	public boolean validateDto(InputUserDto dto) {
 
-		
-
 		if (dto.getName() == null) {
 			return false;
 		} else if (dto.getEmail() == null) {
@@ -35,8 +33,7 @@ public class UserValidator {
 		 * else if (dto.getAddress() == null) return false;
 		 */
 		else if ((dto.getPassword() == null || dto.getMatching_password() == null)
-				|| (dto.getPassword().compareTo(dto.getMatching_password()) != 0) 
-				|| dto.getPassword().length() < 8) {
+				|| (dto.getPassword().compareTo(dto.getMatching_password()) != 0) || dto.getPassword().length() < 8) {
 			return false;
 		}
 		/*
@@ -48,16 +45,37 @@ public class UserValidator {
 	}
 
 	public boolean validateEmail(String email) {
-		if(email == null)return false;
+		if (email == null)
+			return false;
 		Pattern emailPattern = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 		return emailPattern.matcher(email).find();
 	}
-	
+
 	public boolean validatePhoneNumber(String phoneNumber) {
-		if(phoneNumber == null) return false;
+		if (phoneNumber == null)
+			return false;
 		Pattern phonePattern = Pattern.compile("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
 		return phonePattern.matcher(phoneNumber).find();
-		
+
 	}
-	
+
+	public boolean validateAddress(String address) {
+		// TODO Auto-generated method stub
+		return address != null;
+	}
+
+	public boolean validateRole(UserRole role) {
+		if (	role.equals(UserRole.ADMIN)
+				|| role.equals(UserRole.GUEST) 
+				|| role.equals(UserRole.AUTH)) {
+			return true;
+		}
+		return false;
+	}
+
+//	TODO set password minimum requirements
+	public boolean validatePassword(String password) {
+		return password != null;
+	}
+
 }

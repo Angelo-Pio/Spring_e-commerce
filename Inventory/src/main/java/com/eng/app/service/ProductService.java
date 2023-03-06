@@ -1,6 +1,7 @@
 package com.eng.app.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,36 +26,45 @@ public class ProductService {
 	@Autowired
 	private ProductMapper mapper;
 	
-	public List<Product> getAllProducts() {
-		return repo.findAll();
+	public Optional<List<ProductDto>> getAllProducts() {
+		
+		ArrayList<Product> list = (ArrayList<Product>) repo.findAll();
+		
+		ArrayList<ProductDto> responseList = new ArrayList<>(list.size());
+		for(Product p : list) {
+			ProductDto dto = mapper.fromModelToDto(p);
+			responseList.add(dto);
+		}
+		
+		return Optional.of(responseList);
 	}
 
-	public Optional<Product> getOneProduct(String name) {
+	public Optional<ProductDto> getOneProduct(String name) {
 		Optional<Product> res = repo.getByName(name);
 		if (res.isEmpty()) {
 			return Optional.empty();
 		} else {
-			return Optional.of(res.get());
+			return Optional.of(mapper.fromModelToDto(res.get()));
 		}
 	}
 
-	public Optional<Product> createOneProduct(ProductDto p) {
+	public Optional<ProductDto> createOneProduct(ProductDto p) {
 		if (validator.validateDto(p)) {
 			System.out.println("Here");
 			if (!repo.existsByName(p.getName())) {
 				Product modelProduct = mapper.fromDtoToModel(p);
-				return Optional.of(repo.save(modelProduct) ) ;
+				return Optional.of(mapper.fromModelToDto(repo.save(modelProduct)) ) ;
 			}
 		}
 		return Optional.empty();
 
 	}
 
-	public Optional<Product> destroyProduct(String name) {
+	public Optional<ProductDto> destroyProduct(String name) {
 		Optional<Product> product = repo.findByName(name);
 		if (!product.isEmpty()) {
 			repo.deleteByName(name);
-			return Optional.of(product.get());
+			return Optional.of(mapper.fromModelToDto(product.get()));
 		} else {
 			return Optional.empty();
 		}
