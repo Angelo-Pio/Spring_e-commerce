@@ -66,8 +66,8 @@ public class UserValidator {
 
 	public boolean validateRole(UserRole role) {
 		if (	role.equals(UserRole.ADMIN)
-				|| role.equals(UserRole.GUEST) 
-				|| role.equals(UserRole.AUTH)) {
+				|| role.equals(UserRole.ADMIN) 
+				|| role.equals(UserRole.USER)) {
 			return true;
 		}
 		return false;

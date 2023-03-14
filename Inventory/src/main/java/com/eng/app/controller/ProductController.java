@@ -83,12 +83,26 @@ public class ProductController {
 	 * @return
 	 */
 	@PatchMapping("update")
-	public ResponseEntity<ProductDto> updateProductQuantity(@RequestBody ProductDto product){
+	public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto product){
 		boolean queryResult = service.updateProduct(product);
 		HttpStatus response = queryResult == true ? HttpStatus.OK : HttpStatus.BAD_REQUEST ;
 		return new ResponseEntity<ProductDto>(response);
 	}
 	
+	@PatchMapping("decreaseQuantity")
+	public ResponseEntity<Boolean> decreaseProductQuantity(@RequestParam("quantity") Integer q, @RequestParam("name") String name ){
+		boolean prod = service.decreaseProductQuantity(q,name);
+		ResponseEntity<Boolean> response = responseQuery(prod);
+		return response;
+	}
+	
+	@PatchMapping("increaseQuantity")
+	public ResponseEntity<Boolean> increaseProductQuantity(@RequestParam("quantity") Integer q, @RequestParam("name") String name ){
+		boolean prod = service.increaseProductQuantity(q,name);
+		ResponseEntity<Boolean> response = responseQuery(prod);
+		return response;
+	}
+
 	
 	
 	
@@ -107,6 +121,12 @@ public class ProductController {
 		}else {
 			response = new ResponseEntity<ProductDto>(prod.get(),success);
 		}
+		return response;
+	}
+	
+	private ResponseEntity<Boolean> responseQuery(boolean prod) {
+		HttpStatus status = prod == true ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+		ResponseEntity<Boolean> response = new ResponseEntity<Boolean>(prod,status);
 		return response;
 	}
 }

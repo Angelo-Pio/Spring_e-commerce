@@ -50,7 +50,6 @@ public class ProductService {
 
 	public Optional<ProductDto> createOneProduct(ProductDto p) {
 		if (validator.validateDto(p)) {
-			System.out.println("Here");
 			if (!repo.existsByName(p.getName())) {
 				Product modelProduct = mapper.fromDtoToModel(p);
 				return Optional.of(mapper.fromModelToDto(repo.save(modelProduct)) ) ;
@@ -120,6 +119,34 @@ public class ProductService {
 		repo.save(product);
 		return true;
 
+	}
+
+	public boolean decreaseProductQuantity(Integer q, String name) {
+		
+		Optional<Product> prod = repo.findByName(name);
+		Integer res = 0;
+		if(!prod.isEmpty() == true) {
+			if(prod.get().getQuantity() - q >= 0) {
+				res = repo.decreaseByName(name,q);
+			}
+		} 
+			
+		return res > 0 ? true : false;
+		
+		
+		
+		
+	}
+
+	public boolean increaseProductQuantity(Integer q, String name) {
+		Optional<Product> prod = repo.findByName(name);
+		Integer res = 0;
+		if(!prod.isEmpty() == true) {
+			res = repo.increaseByName(name,q);
+			
+		} 
+			
+		return res > 0 ? true : false;
 	}
 
 }

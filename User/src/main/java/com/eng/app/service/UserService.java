@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eng.app.dto.InputUserDto;
@@ -14,6 +13,7 @@ import com.eng.app.mapper.UserMapper;
 import com.eng.app.model.User;
 import com.eng.app.model.UserRole;
 import com.eng.app.repository.UserRepository;
+import com.eng.app.utility.PasswordEncryption;
 import com.eng.app.validator.UserValidator;
 
 @Service
@@ -29,7 +29,7 @@ public class UserService {
 	UserMapper mapper;
 
 	@Autowired
-	PasswordEncoder encoder;
+	PasswordEncryption encoder;
 
 	/**
 	 * Validate input <class> UserDto <class> dto, check if not yet present in the

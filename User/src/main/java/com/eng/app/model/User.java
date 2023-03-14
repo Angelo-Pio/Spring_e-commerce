@@ -1,7 +1,5 @@
 package com.eng.app.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -55,6 +53,11 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private UserRole role;
+	
+//	@Column(name = "session_cookie")
+//	private String sessionCookie;
+	
+//	private String expirationCoookieDate;
 	
 
 	

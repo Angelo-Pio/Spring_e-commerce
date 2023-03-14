@@ -77,16 +77,14 @@ public class UserController {
 	}
 	
 	
-	//Interaction with product service, test only
-	@GetMapping("products")
-	public ProductDto[] showProducts(){
-		return webClient
-			.get()
-			.uri("http://localhost:8081/api/product/showAll")
-			.retrieve()
-			.bodyToMono(ProductDto[].class)
-			.block();
-		
+	@GetMapping("loginPage")
+	public String loginPage() {
+		return "Login Page, insert here your data to try logging ien";
+	}
+	
+	@GetMapping("helloApi")
+	public String helloApi() {
+		return "HELLO";
 	}
 	
 	// Private Methods
