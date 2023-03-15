@@ -50,6 +50,7 @@ public class UserAuthentication {
 					.cookie(AUTH_COOKIE, getCookie(exchange, AUTH_COOKIE).getValue())
 					.cookie(ROLE_COOKIE, getCookie(exchange, ROLE_COOKIE).getValue()).retrieve()
 					.bodyToMono(Boolean.class)
+					.onErrorReturn(false)
 					
 
 			;
