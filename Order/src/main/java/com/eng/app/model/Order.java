@@ -3,6 +3,7 @@ package com.eng.app.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,15 +32,14 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@NotEmpty
+	@NotNull
 	private Integer user_id;
-//	
-//	@NotEmpty
-//	@OneToMany(mappedBy = "cart.id")
-//	private List<Cart> cart_id;
-//	
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Cart> cart;
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotBlank	
+	@NotNull
 	private Date placed_at;
 	
 	@Column(columnDefinition = "float default 0.0")

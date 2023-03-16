@@ -31,7 +31,7 @@ public class Cart {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@ManyToOne(optional = false )
+//	@ManyToOne(optional = false)
 //	@JoinColumn(name="cart_id")
 	private Integer id;
 	
