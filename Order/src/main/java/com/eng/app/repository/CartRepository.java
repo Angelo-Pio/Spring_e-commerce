@@ -1,7 +1,11 @@
 package com.eng.app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class CartRepository implements JpaRepository<T, ID> {
+import com.eng.app.model.Cart;
+
+@Repository
+public interface CartRepository extends JpaRepository<Cart, Integer> {
 
 }

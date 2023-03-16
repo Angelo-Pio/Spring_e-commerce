@@ -1,7 +1,11 @@
 package com.eng.app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class OrderRepository implements JpaRepository<T, ID> {
+import com.eng.app.model.Order;
+
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Integer> {
 
 }

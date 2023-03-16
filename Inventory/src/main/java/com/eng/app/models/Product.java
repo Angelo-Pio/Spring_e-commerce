@@ -1,6 +1,5 @@
 package com.eng.app.models;
 
-
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -19,13 +18,13 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "products")
-@Check(constraints =  "quantity >= 0 and cost > 0" )
+@Check(constraints = "quantity >= 0 and cost > 0")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
-	
+
 	public static final int MAX_DESCRIPTION_LEN = 500;
 
 	public static final int MAX_NAME_LEN = 255;
@@ -33,28 +32,20 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer product_id;
-	
-	@Column(unique = true, nullable = false, columnDefinition = "varchar(255)" )
+
+	@Column(unique = true, nullable = false, columnDefinition = "varchar(255)")
 	private String name;
-	
-	@Column(unique = false, nullable = false, columnDefinition = "varchar("+ MAX_DESCRIPTION_LEN +")" )
+
+	@Column(unique = false, nullable = false, columnDefinition = "varchar(" + MAX_DESCRIPTION_LEN + ")")
 	private String description;
 
-	@Column(
-			nullable = false,
-			unique = false)
+	@Column(nullable = false, unique = false)
 	private Integer quantity;
-	
-	@Column(
-			nullable = false,
-			length = 50
-			)
+
+	@Column(nullable = false, length = 50)
 	private String category;
-	
-	@Column(
-			nullable = false,
-			columnDefinition = "numeric"
-			)
-	private BigDecimal cost;
+
+	@Column(nullable = false)
+	private Float cost;
 
 }
