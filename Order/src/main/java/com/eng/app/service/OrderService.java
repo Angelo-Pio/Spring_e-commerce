@@ -78,4 +78,12 @@ public class OrderService {
 				.placed_at(timestamp).build();
 	}
 
+	public List<Order> showAll(Integer user_id) {
+		// TODO Auto-generated method stub
+		
+		if(user_id == null) return null;
+		
+		return repo.findAllByUserId(user_id);
+	}
+
 }

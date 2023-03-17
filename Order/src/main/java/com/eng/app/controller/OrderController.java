@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,11 +36,12 @@ public class OrderController {
 		Boolean resp = service.create(carts);
 		return ut.responseStatus(resp, HttpStatus.CREATED, HttpStatus.BAD_REQUEST);
 		
-		
-		
 	}
 	
-	
+	@GetMapping("/{user_id}/showAll")
+	public ResponseEntity<List<Order>> showAll(@PathVariable Integer user_id){
+		return new ResponseEntity<>(service.showAll(user_id),HttpStatus.OK);
+	}
 	
 	@GetMapping("showAll")
 	public ResponseEntity<List<Order>> showAll(){
