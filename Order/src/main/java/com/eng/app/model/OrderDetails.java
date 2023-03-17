@@ -2,34 +2,28 @@ package com.eng.app.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.lang.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.bytebuddy.utility.nullability.MaybeNull;
 
 @Entity
-@Data
+@Table(name="order_details")
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "carts")
-public class Cart {
-
+@NoArgsConstructor
+@Data
+public class OrderDetails {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer order_id;
 	
 	@NotNull
 	@PositiveOrZero
@@ -52,6 +46,4 @@ public class Cart {
 	@PositiveOrZero
 	@NotNull
 	private Float product_cost;
-	
-	
 }

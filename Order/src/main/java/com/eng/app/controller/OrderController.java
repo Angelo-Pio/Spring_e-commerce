@@ -17,27 +17,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eng.app.model.Cart;
 import com.eng.app.model.Order;
-import com.eng.app.repository.OrderRepository;
+import com.eng.app.model.OrderDetails;
+import com.eng.app.service.OrderService;
+import com.eng.app.utility.ControllerUtilities;
 
 @RestController
 @RequestMapping("/order")
 public class OrderController {
 	@Autowired
-	OrderRepository repo;
+	OrderService service;
+	
+	@Autowired
+	ControllerUtilities ut;
 	
 	@PostMapping("create")
-	public ResponseEntity<Boolean> create( @Valid @RequestBody Order order ){
-		Order resp = repo.save(order);
-		if(resp == null) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
-		}else {
-			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
-		}
+	public ResponseEntity<Boolean> create( @Valid @RequestBody List<Cart> carts){
+		Order order = ut.buildOrder(carts);
+		Boolean resp = service.create(order);
+		return ut.responseStatus(resp, HttpStatus.CREATED, HttpStatus.BAD_REQUEST);
+		
+		
+		
 	}
+	
+	
 	
 	@GetMapping("showAll")
 	public ResponseEntity<List<Order>> showAll(){
-		return new ResponseEntity<>(repo.findAll(),HttpStatus.OK);
+		return new ResponseEntity<>(service.showAll(),HttpStatus.OK);
 	}
 	
 	@ExceptionHandler({MethodArgumentNotValidException.class})
