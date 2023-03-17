@@ -1,7 +1,9 @@
 package com.eng.app.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.FloatArraySerializer;
@@ -31,8 +34,6 @@ public class Cart {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@ManyToOne(optional = false)
-//	@JoinColumn(name="cart_id")
 	private Integer id;
 	
 	@Column(nullable = false)
@@ -43,8 +44,8 @@ public class Cart {
 	@NotNull
 	private Integer product_quantity;
 	
-	@Column(unique = false, nullable = false, length = 255 )
 	@NotNull
+	@Length(max = 255)
 	private String product_name;
 	
 	@Column(nullable = false)
@@ -52,6 +53,9 @@ public class Cart {
 	@NotNull
 	private Float product_cost;
 	
+//	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL )
+////	@JoinColumn(name="cart_id")
+//	private Order order;
 	
 	
 	

@@ -26,8 +26,7 @@ public class OrderController {
 	OrderRepository repo;
 	
 	@PostMapping("create")
-	public ResponseEntity<Boolean> create(@Valid @RequestBody Order order){
-		
+	public ResponseEntity<Boolean> create( @Valid @RequestBody Order order ){
 		Order resp = repo.save(order);
 		if(resp == null) {
 			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
