@@ -32,8 +32,7 @@ public class OrderController {
 	
 	@PostMapping("create")
 	public ResponseEntity<Boolean> create( @Valid @RequestBody List<Cart> carts){
-		Order order = ut.buildOrder(carts);
-		Boolean resp = service.create(order);
+		Boolean resp = service.create(carts);
 		return ut.responseStatus(resp, HttpStatus.CREATED, HttpStatus.BAD_REQUEST);
 		
 		

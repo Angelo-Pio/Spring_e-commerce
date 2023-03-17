@@ -2,6 +2,8 @@ package com.eng.app.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -23,7 +25,8 @@ import lombok.NoArgsConstructor;
 public class OrderDetails {
 	
 	@Id
-	private Integer order_id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	
 	@NotNull
 	@PositiveOrZero
@@ -42,7 +45,7 @@ public class OrderDetails {
 	@Length(max = 255)
 	private String product_name;
 	
-	@Column(nullable = false)
+	@Column(nullable = false,precision = 2)
 	@PositiveOrZero
 	@NotNull
 	private Float product_cost;

@@ -31,30 +31,5 @@ public class ControllerUtilities {
 		}
 	}
 
-	public Order buildOrder(@Valid List<Cart> carts) {
-
-		
-		ArrayList<OrderDetails> order_details_list = new ArrayList<>(carts.size());
-		Float total = Float.valueOf(0);
-		for (Cart cart : carts) {
-			OrderDetails order_detail = OrderDetails.builder()
-						.product_cost(cart.getProduct_cost())
-						.product_name(cart.getProduct_name())
-						.product_quantity(cart.getProduct_quantity())
-						.product_id(cart.getProduct_id())
-						.user_id(cart.getUser_id())
-						.build();
-			Float.sum(total,order_detail.getProduct_cost());
-			order_details_list.add(order_detail);
-		}
-		
-		Date timestamp = new Date();
-		
-		return Order.builder()
-				.order_details(order_details_list)
-				.total(total)
-				.user_id(order_details_list.get(0).getUser_id())
-				.placed_at(timestamp)
-				.build();
-	}
+	
 }
