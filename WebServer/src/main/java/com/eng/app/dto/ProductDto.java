@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Component
 public class ProductDto {
 	
-	public static final int MAX_DESCRIPTION_LEN = Product.MAX_DESCRIPTION_LEN;
+	public static final int MAX_DESCRIPTION_LEN = 500;
 	
 	private String name;
 	

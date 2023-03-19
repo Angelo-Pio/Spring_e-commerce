@@ -46,9 +46,9 @@ public class CartController {
 	}
 
 //	UPDATE
-	@PostMapping("/{cart_id}/updateQuantity")
+	@PostMapping("/updateQuantity")
 	public ResponseEntity<Boolean> increaseQuantity(@RequestParam("quantity") Integer quantity,
-			@PathVariable("cart_id") Integer cart_id) {
+			@RequestParam("cart_id") Integer cart_id) {
 		Boolean res = service.increaseQuantity(Integer.valueOf(cart_id), quantity);
 		return ut.responseStatus(res, HttpStatus.OK, HttpStatus.BAD_REQUEST);
 	}
