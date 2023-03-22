@@ -23,7 +23,7 @@ import com.eng.app.service.OrderService;
 import com.eng.app.utility.ControllerUtilities;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 public class OrderController {
 	@Autowired
 	OrderService service;

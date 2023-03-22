@@ -46,7 +46,7 @@ public class UserController {
 		return HttpResponse(user, HttpStatus.CREATED, HttpStatus.BAD_REQUEST);
 	}
 	
-	// GET 
+	// READ 
 	
 	@GetMapping("showOne")
 	public ResponseEntity<OutputUserDto> showOne(@RequestParam("email") String email){

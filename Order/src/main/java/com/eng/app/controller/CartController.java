@@ -22,7 +22,7 @@ import com.eng.app.service.CartService;
 import com.eng.app.utility.ControllerUtilities;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api/order/cart")
 public class CartController {
 
 	@Autowired
