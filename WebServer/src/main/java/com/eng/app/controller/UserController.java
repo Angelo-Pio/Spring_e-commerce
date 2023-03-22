@@ -21,7 +21,7 @@ public class UserController {
 		
 		ProductDto products[]= WebClient.create()
 				.get()
-				.uri("http://localhost:8081/api/product/showAll")
+				.uri("http://localhost:8080/product/showAll")
 				.retrieve()
 				.bodyToMono(ProductDto[].class)
 				.block()
