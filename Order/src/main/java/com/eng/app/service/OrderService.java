@@ -26,6 +26,10 @@ public class OrderService {
 	@Autowired
 	OrderDetailsRepository repo_details;
 
+	/**
+	 * Debug only
+	 * @return
+	 */
 	public List<Order> showAll() {
 		// TODO Auto-generated method stub
 		return repo.findAll();
@@ -34,20 +38,27 @@ public class OrderService {
 	public Boolean create(@Valid List<Cart> carts) {
 		// TODO Auto-generated method stub
 		Order order = buildOrder(carts);
-		repo.save(order);
+		if(order == null) {
+			return false;
+		}
+		Order response = repo.save(order);
+		updateInventory(order);
 		return true;
 	}
 
-//	public Boolean addCartById(@Valid Cart cart, Integer order_id) {
-//
-//		if (repo.findById(order_id).isEmpty()) {
-//			return false;
-//		}
-//
-//		Integer res = repo.insertCartById(cart, order_id);
-//
-//		return res == 0 ? true : false;
-//	}
+	private void updateInventory(Order order) {
+		
+	}
+
+	/*
+	 * public Boolean addCartById(@Valid Cart cart, Integer order_id) {
+	 * 
+	 * if (repo.findById(order_id).isEmpty()) { return false; }
+	 * 
+	 * Integer res = repo.insertCartById(cart, order_id);
+	 * 
+	 * return res == 0 ? true : false; }
+	 */
 
 	private Order buildOrder(@Valid List<Cart> carts) {
 
@@ -78,6 +89,11 @@ public class OrderService {
 				.placed_at(timestamp).build();
 	}
 
+	/**
+	 * Show all orders placed by a specific user
+	 * @param user_id
+	 * @return
+	 */
 	public List<Order> showAll(Integer user_id) {
 		// TODO Auto-generated method stub
 		

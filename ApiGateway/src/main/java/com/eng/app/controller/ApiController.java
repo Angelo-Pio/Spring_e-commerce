@@ -5,17 +5,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import reactor.core.publisher.Mono;
+
 @RestController
 public class ApiController {
 
 	@Autowired
 	WebClient webClient;
 	
-	@GetMapping("/user/helloApi")
+	@GetMapping("/helloApi")
 	public String home() {
-		return webClient.get().uri("/api/user/helloApi")
+		return webClient.get().uri("http://localhost:8082/api/user/helloApi")
 				.retrieve()
-				.bodyToMono(String.class).block();
+				.bodyToMono(String.class)
+				.block()
+				;
 		
 	}
 }
