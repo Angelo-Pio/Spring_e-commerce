@@ -1,10 +1,13 @@
 package com.eng.app.config;
 
+import java.net.URL;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 
 import com.eng.app.filter.UserAuthentication;
 import com.eng.app.filter.UserAuthenticationFilter;

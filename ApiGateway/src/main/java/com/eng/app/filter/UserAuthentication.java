@@ -2,6 +2,7 @@ package com.eng.app.filter;
 
 import org.hibernate.validator.internal.metadata.aggregated.rule.ReturnValueMayOnlyBeMarkedOnceAsCascadedPerHierarchyLine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Chain;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class UserAuthentication {
 	private static final String AUTH_COOKIE = "AUTHENTICATION_COOKIE";
 
 	private static final String ROLE_COOKIE = "USER_ROLE";
+	
+	@Value("${com.service.user.url}")
+	private String user_url;
 
 //	@Autowired
 	private WebClient webClient = WebClient.builder().build();
@@ -40,23 +44,22 @@ public class UserAuthentication {
 
 	
 	// Mono produce eccessivi problemi 
-	public Mono<Boolean> areCookiesValid(ServerWebExchange exchange) {
+	public boolean areCookiesValid(ServerWebExchange exchange) {
 
 		if (areCookiesPresent(exchange)) {
 
-			return
-
-			webClient.get().uri("http://localhost:8082/auth/login")
+			Boolean res = webClient.get().uri(user_url+"/auth/login")
 					.cookie(AUTH_COOKIE, getCookie(exchange, AUTH_COOKIE).getValue())
 					.cookie(ROLE_COOKIE, getCookie(exchange, ROLE_COOKIE).getValue()).retrieve()
 					.bodyToMono(Boolean.class)
-					.onErrorReturn(false)
+					.block();
+//					.onErrorReturn(false)
 					
 
-			;
+			return res != null ? res.booleanValue() : false;
 
 		} else {
-			return Mono.just(false);
+			return false;
 
 		}
 

@@ -6,12 +6,15 @@ import java.util.Optional;
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.cloud.gateway.filter.factory.RedirectToGatewayFilterFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Component
 public class UserAuthenticationFilter extends AbstractGatewayFilterFactory<UserAuthentication> {
 
@@ -30,38 +33,33 @@ public class UserAuthenticationFilter extends AbstractGatewayFilterFactory<UserA
 			
 			//block non può essere usato, viene riportato un errore ma ho necessità
 			// di estrarre il valore boolean da areCookiesValid
-			Mono<Boolean> areCookiesValid = authenticator.areCookiesValid(exchange);
+			boolean areCookiesValid = authenticator.areCookiesValid(exchange);
 			
-			return areCookiesValid.flatMap(t -> {
-				
-			
-			
-			if (areCookiesPresent == false || t.booleanValue() == false) {
-
-				System.out.println("Checks passed");
+			if (areCookiesPresent == false || areCookiesValid == false) {
+				log.info("session authentication through cookies : NOT OK -> redirecting");
 				URI redirectUri;
 				try {
-					// TODO make it possible to use Spring gateway path rewriting from a filter
-					redirectUri = new URI("http://localhost:8082/api/user/loginPage");
+					// TODO Need to find out how to redirect to local index.html
+					redirectUri = new URI("http://localhost:8082/api/user/helloApi");
 				} catch (URISyntaxException e) {
 					e.printStackTrace();
 					return null;
 				}
-
-				return chain.filter(exchange.mutate().request(redirectToLogin(exchange, redirectUri)).build());
+				ServerWebExchange mutatedExchange = exchange.mutate().request(redirectToLogin(exchange, redirectUri)).build();
+				return chain.filter(mutatedExchange);
 				
-
 			}
 
+			log.info("session authentication through cookies : OK");
 			return chain.filter(exchange);
-			});
+			
 		};
 
 	}
 
 	private org.springframework.http.server.reactive.ServerHttpRequest redirectToLogin(ServerWebExchange exchange,
 			URI uri) {
-		return exchange.getRequest().mutate().uri(uri).method(HttpMethod.GET).build();
+		return exchange.getRequest().mutate().uri(uri).build();
 
 	}
 }
