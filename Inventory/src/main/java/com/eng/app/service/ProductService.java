@@ -89,7 +89,7 @@ public class ProductService {
 		// Update single attributes!
 
 		String description = p.getDescription();
-		BigDecimal cost = p.getCost();
+		Float cost = p.getCost();
 		String category = p.getCategory();
 		Integer quantity = p.getQuantity();
 

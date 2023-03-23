@@ -3,6 +3,7 @@ package com.eng.app.repository;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,5 +25,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 	@Transactional
 	@Query(value = "select c from Cart c where c.user_id = :user_id")
 	List<Cart> findAllByUserId(@Param("user_id") Integer user_id);
+
+	
 
 }

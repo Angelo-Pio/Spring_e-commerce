@@ -24,6 +24,7 @@ public class ProductMapper implements ProductMapperInterface{
 	public ProductDto fromModelToDto(Product product) {
 		new ProductDto();
 		return ProductDto.builder()
+				.id(product.getProduct_id())
 				.name(product.getName())
 				.description(product.getDescription())
 				.category(product.getCategory())

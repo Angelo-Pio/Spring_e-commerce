@@ -17,7 +17,7 @@ public class ProductValidator {
 			return false;
 		} else if (product.getDescription() == null || product.getDescription().length() > Product.MAX_DESCRIPTION_LEN) {
 			return false;
-		} else if (product.getCost() == null ||  product.getCost().compareTo(BigDecimal.ZERO) < 0) {
+		} else if (product.getCost() == null ||  product.getCost()  < 0) {
 			return false;
 		} else if (product.getQuantity() == null ||  product.getQuantity().compareTo(0) < 0) {
 			return false;
@@ -41,8 +41,8 @@ public class ProductValidator {
 		return quantity >= 0;
 	}
 
-	public boolean validateCost(BigDecimal cost) {
-		return cost.compareTo(BigDecimal.ZERO) != -1;
+	public boolean validateCost(Float cost) {
+		return cost > 0;
 	}
 
 	public boolean validateCategory(String category) {

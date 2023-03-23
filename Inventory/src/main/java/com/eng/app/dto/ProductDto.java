@@ -20,6 +20,8 @@ public class ProductDto {
 	
 	public static final int MAX_DESCRIPTION_LEN = Product.MAX_DESCRIPTION_LEN;
 	
+	private Integer id;
+	
 	private String name;
 	
 	private String description;
