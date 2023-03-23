@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -65,20 +66,39 @@ public class OrderService {
 
 		log.info("everything ok, placing order");
 		Order response = repo.save(order);
+		
+		log.info("clearing cart");
+		clearCart(user_id);
+		
 		return true;
 	}
 
+	private void clearCart(@Valid Integer user_id) {
+		repo_cart.deleteByUserId(user_id);
+	}
+
+	/**
+	 * This method update the products in Product Service's db
+	 * TODO this method should be more robust in order to rollback on errors from the request
+	 * @param order
+	 * @return
+	 */
 	private boolean updateInventory(Order order) {
 		
-		String url = api+"product/decreaseQuantity";
+		String url ="http://localhost:8080/product/decreaseQuantity";
 		List<OrderDetails> details = order.getOrder_details();
 		
-		WebClient webClient = WebClient.create();
 		for (OrderDetails d : details) {
-			//TODO add the attributes!
-			Boolean response = webClient.patch().uri(url, d.getProduct_quantity(), d.getProduct_name())
+			log.info("Updating product:" + d.getProduct_name());
+			WebClient webClient = WebClient.builder().baseUrl(api).build();
+			Boolean response = webClient.patch().uri( q -> 
+					q.path("/decreaseQuantity")
+					.queryParam("quantity", d.getProduct_quantity())
+					.queryParam("name", d.getProduct_name()).build()
+					)
 			.retrieve()
 			.bodyToMono(Boolean.class)
+			.onErrorReturn(false)
 			.block();
 			if(response != null && response.booleanValue() == false) {
 				return false;
