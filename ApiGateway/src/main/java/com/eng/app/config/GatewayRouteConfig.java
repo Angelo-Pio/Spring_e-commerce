@@ -33,12 +33,16 @@ public class GatewayRouteConfig {
 						 .uri(user_url)
 						 )
 				 .route("only-auth", r -> r.path("/auth/**")
+//						 .and().not(t -> t.path("/auth/login").or().path("auth/logout"))
+						
 						 //TODO escludere /auth/login e /auth/logout
 						 .filters(w ->  w.rewritePath("/auth/(?<segment>/?.*)", "/api/auth/$\\{segment}")
 //								 .filter(new UserAuthenticationFilter().apply(new UserAuthentication()))
 								 )
+						 
 						 .uri(user_url)
 						 )
+				 				 
 				 .route("order", r ->  r.path("/order/**")
 						 .filters(w -> w.rewritePath("/order/(?<segment>/?.*)", "/api/order/$\\{segment}")
 								 .filter(new UserAuthenticationFilter().apply(new UserAuthentication()))

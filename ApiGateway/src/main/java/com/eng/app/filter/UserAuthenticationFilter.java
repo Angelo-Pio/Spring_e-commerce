@@ -51,6 +51,7 @@ public class UserAuthenticationFilter extends AbstractGatewayFilterFactory<UserA
 			}
 
 			log.info("session authentication through cookies : OK");
+			
 			return chain.filter(exchange);
 			
 		};

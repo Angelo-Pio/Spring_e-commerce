@@ -102,6 +102,7 @@ public class UserAuthService {
 		if (cookie_value != null || cookie_value != ""){
 			Cookie cookie = new Cookie(cookie_name, cookie_value);
 			cookie.setHttpOnly(true);
+			cookie.setPath("/");
 			response.addCookie(cookie);
 			return true;
 		}
