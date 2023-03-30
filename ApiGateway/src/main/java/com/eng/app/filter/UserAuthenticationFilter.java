@@ -8,9 +8,11 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.RedirectToGatewayFilterFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -19,6 +21,7 @@ import reactor.core.publisher.Mono;
 
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.addOriginalRequestUrl;
+import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.setResponseStatus;
 
 @Slf4j
 @Component
@@ -37,31 +40,13 @@ public class UserAuthenticationFilter extends AbstractGatewayFilterFactory<UserA
 			boolean areCookiesValid = authenticator.areCookiesValid(exchange);
 			
 			if (areCookiesPresent == false || areCookiesValid == false) {
-				log.info("session authentication through cookies : NOT OK -> redirecting");
-//				URI redirectUri;
-//											
-//				redirectUri = URI.create("http://localhost:8080/user/loginPage");
-//				
-//				ServerHttpRequest request = exchange
-//						.getRequest()
-//						.mutate()
-//						.uri(redirectUri)
-//						.method(HttpMethod.GET)
-//						.build();
-//				
+				log.info("session authentication through cookies : NOT OK -> redirecting to loginPage");
 				
-				var resp = exchange.getResponse();
-				resp.setStatusCode(HttpStatus.UNAUTHORIZED);
-				return resp.setComplete(); 
-//						.mutate()
-//						.request(request)
-//						.build();
+				var response = exchange.getResponse();
+				response.setStatusCode(HttpStatus.PERMANENT_REDIRECT);
+				response.getHeaders().set("Location", "/user/loginPage");
+				return response.setComplete();
 				
-//				log.info(request.getURI().toString());
-
-//				mutatedExchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, request.getURI());
-//				
-//				return chain.filter(mutatedExchange);
 				
 			}
 
