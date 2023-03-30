@@ -49,11 +49,11 @@ public class UserAuthController {
 		// and return it in the response
 		boolean ret = false;
 		if(email  != null && password != null) {
-			ret = service.loginByEmail(email, password, response);
-			
-			if(auth_cookie != null && role_cookie != null) {
-				ret = service.loginBySession(role_cookie, auth_cookie, response);
-			}
+			ret = service.loginByEmail(email, password, response);			
+		}
+		
+		if(auth_cookie != null && role_cookie != null) {
+			ret = service.loginBySession(role_cookie, auth_cookie, response);
 		}
 		HttpStatus status = ret == true ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
 

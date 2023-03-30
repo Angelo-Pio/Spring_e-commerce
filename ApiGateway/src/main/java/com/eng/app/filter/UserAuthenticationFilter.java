@@ -5,14 +5,20 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.RedirectToGatewayFilterFactory;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
+
+import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR;
+import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.addOriginalRequestUrl;
 
 @Slf4j
 @Component
@@ -27,26 +33,35 @@ public class UserAuthenticationFilter extends AbstractGatewayFilterFactory<UserA
 
 		return (exchange, chain) -> {
 
-			// a cookie is valid when it matches an entry in the
-			// user service db with an expiration date still not reached
 			boolean areCookiesPresent = authenticator.areCookiesPresent(exchange);
-			
-			//block non può essere usato, viene riportato un errore ma ho necessità
-			// di estrarre il valore boolean da areCookiesValid
 			boolean areCookiesValid = authenticator.areCookiesValid(exchange);
 			
 			if (areCookiesPresent == false || areCookiesValid == false) {
 				log.info("session authentication through cookies : NOT OK -> redirecting");
-				URI redirectUri;
-				try {
-					// TODO Need to find out how to redirect to local index.html
-					redirectUri = new URI("http://localhost:8082/api/user/helloApi");
-				} catch (URISyntaxException e) {
-					e.printStackTrace();
-					return null;
-				}
-				ServerWebExchange mutatedExchange = exchange.mutate().request(redirectToLogin(exchange, redirectUri)).build();
-				return chain.filter(mutatedExchange);
+//				URI redirectUri;
+//											
+//				redirectUri = URI.create("http://localhost:8080/user/loginPage");
+//				
+//				ServerHttpRequest request = exchange
+//						.getRequest()
+//						.mutate()
+//						.uri(redirectUri)
+//						.method(HttpMethod.GET)
+//						.build();
+//				
+				
+				var resp = exchange.getResponse();
+				resp.setStatusCode(HttpStatus.UNAUTHORIZED);
+				return resp.setComplete(); 
+//						.mutate()
+//						.request(request)
+//						.build();
+				
+//				log.info(request.getURI().toString());
+
+//				mutatedExchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, request.getURI());
+//				
+//				return chain.filter(mutatedExchange);
 				
 			}
 
@@ -57,9 +72,5 @@ public class UserAuthenticationFilter extends AbstractGatewayFilterFactory<UserA
 
 	}
 
-	private org.springframework.http.server.reactive.ServerHttpRequest redirectToLogin(ServerWebExchange exchange,
-			URI uri) {
-		return exchange.getRequest().mutate().uri(uri).build();
-
-	}
+	
 }
